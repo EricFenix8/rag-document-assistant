@@ -1,22 +1,13 @@
 from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
 
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
+class EmbeddingModel:
 
-texts = [
-    "Python is a programming language.",
-    "Python is widely used for software development.",
-    "Madrid is the capital of Spain."
-]
+    def __init__(self, model_name="all-MiniLM-L6-v2"):
+        self.model = SentenceTransformer(model_name)
 
-embeddings = model.encode(texts)
-
-question = "What is Python used for?"
-
-question_embedding = model.encode([question])
-
-similarities = cosine_similarity(question_embedding, embeddings)[0]
-
-for text, similarity in zip(texts, similarities):
-    print(f"{similarity:.4f} - {text}")
+    def encode(self, texts):
+        return self.model.encode(
+            texts,
+            normalize_embeddings=True
+        )
