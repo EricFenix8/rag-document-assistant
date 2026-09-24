@@ -38,6 +38,7 @@ class Retriever:
             results.append({
                 "text": chunk["text"],
                 "page": chunk["page"],
+                "source": chunk["source"],
                 "score": float(score)
             })
 

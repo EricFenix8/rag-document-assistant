@@ -28,6 +28,36 @@ def test_rag_pipeline():
     )
 
     assert all(
+        "source" in result
+        for result in results
+    )
+
+    assert all(
         "score" in result
         for result in results
+    )
+
+    result = pipeline.ask(
+        "What is this document about?",
+        top_k=2
+    )
+
+    assert "answer" in result
+    assert "sources" in result
+
+    assert len(result["sources"]) == 2
+
+    assert all(
+        "source" in source
+        for source in result["sources"]
+    )
+
+    assert all(
+        "page" in source
+        for source in result["sources"]
+    )
+
+    assert all(
+        "score" in source
+        for source in result["sources"]
     )

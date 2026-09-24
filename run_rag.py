@@ -10,9 +10,18 @@ pipeline.add_pdf("data/sample.pdf")
 
 results = pipeline.search(
     "What is this document about?",
-    top_k=5
+    top_k=3
 )
 
-for document, score in results:
-    print(f"\nScore: {score:.4f}")
-    print(document[:300])
+
+print("\nAnswer:")
+print(result["answer"])
+
+print("\nSources:")
+
+for source in result["sources"]:
+    print(
+        f"- {source['source']} "
+        f"(page {source['page']}, "
+        f"score: {source['score']:.4f})"
+    )

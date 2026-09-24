@@ -24,7 +24,31 @@ class RAGPipeline:
         )
         
     def ask(self, question, top_k=3):
-        results = self.search(question, top_k=top_k)
-        context = "\n\n".join(document for document, score in results)
-        
-        return self.generator.generate(question, context)
+        results = self.search(
+            question,
+            top_k=top_k
+        )
+
+        context = "\n\n".join(
+            result["text"]
+            for result in results
+        )
+
+        answer = self.generator.generate(
+            question,
+            context
+        )
+
+        sources = [
+            {
+                "source": result["source"],
+                "page": result["page"],
+                "score": result["score"]
+            }
+            for result in results
+        ]
+
+        return {
+            "answer": answer,
+            "sources": sources
+        }
