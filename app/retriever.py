@@ -7,18 +7,21 @@ class Retriever:
     def __init__(self, model_name="all-MiniLM-L6-v2"):
         self.embedding_model = EmbeddingModel(model_name)
         self.vector_store = None
-        self.documents = []
+        self.chunks = []
 
-    def add_documents(self, documents):
-        self.documents = documents
+    def add_documents(self, chunks):
+        self.chunks = chunks
 
-        embeddings = self.embedding_model.encode(documents)
+        texts = [chunk["text"] for chunk in chunks]
+
+        embeddings = self.embedding_model.encode(texts)
 
         dimension = embeddings.shape[1]
 
         self.vector_store = VectorStore(dimension)
         self.vector_store.add(embeddings)
 
+    #Devuelve los chunks mas importantes para una consulta junto a su metadata y puntuacion de similitud
     def search(self, query, top_k=3):
         query_embedding = self.embedding_model.encode([query])
 
@@ -30,8 +33,12 @@ class Retriever:
         results = []
 
         for score, index in zip(scores[0], indices[0]):
-            document = self.documents[index]
+            chunk = self.chunks[index]
 
-            results.append((document, score))
+            results.append({
+                "text": chunk["text"],
+                "page": chunk["page"],
+                "score": float(score)
+            })
 
         return results

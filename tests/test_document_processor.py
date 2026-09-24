@@ -10,4 +10,12 @@ def test_document_processor():
     chunks = processor.process_pdf("data/sample.pdf")
 
     assert len(chunks) > 1
-    assert all(len(chunk) > 0 for chunk in chunks)
+    assert all(len(chunk["text"]) > 0 for chunk in chunks)
+    assert all(
+        "page" in chunk
+        for chunk in chunks
+    )
+    assert all(
+    "source" in chunk
+    for chunk in chunks
+    )

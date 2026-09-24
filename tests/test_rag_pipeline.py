@@ -2,6 +2,7 @@ from app.rag_pipeline import RAGPipeline
 
 
 def test_rag_pipeline():
+
     pipeline = RAGPipeline(
         chunk_size=20,
         overlap=5
@@ -15,4 +16,18 @@ def test_rag_pipeline():
     )
 
     assert len(results) == 2
-    assert all(len(document) > 0 for document, score in results)
+
+    assert all(
+        len(result["text"]) > 0
+        for result in results
+    )
+
+    assert all(
+        "page" in result
+        for result in results
+    )
+
+    assert all(
+        "score" in result
+        for result in results
+    )

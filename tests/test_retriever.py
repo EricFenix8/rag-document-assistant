@@ -2,16 +2,32 @@ from app.retriever import Retriever
 
 
 def test_retriever():
-    documents = [
-        "Python is a programming language.",
-        "Python is widely used for software development.",
-        "Madrid is the capital of Spain.",
-        "Machine learning is a branch of artificial intelligence."
+    chunks = [
+        {
+            "text": "Python is a programming language.",
+            "page": 1,
+            "source": "test.pdf"
+        },
+        {
+            "text": "Python is widely used for software development.",
+            "page": 2,
+            "source": "test.pdf"
+        },
+        {
+            "text": "Madrid is the capital of Spain.",
+            "page": 3,
+            "source": "test.pdf"
+        },
+        {
+            "text": "Machine learning is a branch of artificial intelligence.",
+            "page": 4,
+            "source": "test.pdf"
+        }
     ]
 
     retriever = Retriever()
 
-    retriever.add_documents(documents)
+    retriever.add_documents(chunks)
 
     results = retriever.search(
         "What is Python used for?",
@@ -19,4 +35,9 @@ def test_retriever():
     )
 
     assert len(results) == 2
-    assert results[0][0] == "Python is a programming language."
+
+    assert results[0]["text"] == \
+        "Python is a programming language."
+
+    assert "page" in results[0]
+    assert "score" in results[0]

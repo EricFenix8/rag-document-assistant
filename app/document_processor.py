@@ -12,8 +12,13 @@ class DocumentProcessor:
         )
 
     def process_pdf(self, file_path):
-        text = self.pdf_loader.load(file_path)
+        pages = self.pdf_loader.load(file_path)
 
-        chunks = self.chunker.split(text)
+        chunks = self.chunker.split_pages(pages)
+        
+        source  = file_path.split("\\")[-1]
+        
+        for chunk in chunks:
+            chunk["source"] = source
 
         return chunks
