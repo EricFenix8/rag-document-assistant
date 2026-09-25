@@ -4,3 +4,8 @@ faiss-cpu
 python-dotenv
 scikit-learn
 ollama
+uvicorn
+python-multipart
+fastapi
+streamlit
+requests

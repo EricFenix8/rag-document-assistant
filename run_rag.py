@@ -8,7 +8,7 @@ pipeline = RAGPipeline(
 
 pipeline.add_pdf("data/sample.pdf")
 
-results = pipeline.search(
+result = pipeline.ask(
     "What is this document about?",
     top_k=3
 )
